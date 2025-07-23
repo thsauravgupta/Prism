@@ -1,0 +1,2 @@
+# VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem
+SRIB-PRISM Program
