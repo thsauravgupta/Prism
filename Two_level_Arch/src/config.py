@@ -20,7 +20,7 @@ DEFAULT_COUNTRY = "kr"
 
 
 ACTION_FEATURES = ["day_of_week", "hour", "device", "control", "device_control"]
-SEQUENCE_LENGTH = 10   # each instance = 10 consecutive actions
+SEQUENCE_LENGTH = 30   # each instance = 10 consecutive actions
 
 
 DEFAULT_DEVICE_TYPES = {
