@@ -20,20 +20,26 @@ DEFAULT_COUNTRY = "kr"
 
 
 ACTION_FEATURES = ["day_of_week", "hour", "device", "control", "device_control"]
-SEQUENCE_LENGTH = 30   # each instance = 10 consecutive actions
+SEQUENCE_LENGTH = 10   # each instance = 10 consecutive actions
+CONTEXT_LENGTH = 9     # first 9 steps used as context, 10th is prediction target
+NUM_HOUR_BINS = 8      # SmartSense hours are binned into 8 slots (0-7)
+NUM_DAY_BINS = 7       # 7 days of the week (0-6)
 
 
+# Real SmartSense device types (from dictionary.py — Korea dataset)
 DEFAULT_DEVICE_TYPES = {
-    0: "TV",
-    1: "AC",
-    2: "Light",
-    3: "Washer",
-    4: "Oven",
-    5: "Fridge",
-    6: "Speaker",
-    7: "Vacuum",
-    8: "Plug",
-    9: "Thermostat",
+    0: "AirConditioner", 1: "AirPurifier", 2: "Blind", 3: "Camera",
+    4: "ClothingCareMachine", 5: "Computer", 6: "ContactSensor",
+    7: "Dishwasher", 8: "DoorBell", 9: "Dryer", 10: "Elevator",
+    11: "Fan", 12: "GarageDoor", 13: "GasValve", 14: "Humidifier",
+    15: "LeakSensor", 16: "Light", 17: "Microwave",
+    18: "MotionSensor", 19: "MultiFunctionalSensor",
+    20: "NetworkAudio", 21: "None", 22: "Other",
+    23: "PresenceSensor", 24: "Projector", 25: "Refrigerator",
+    26: "RemoteController", 27: "RobotCleaner", 28: "SetTop",
+    29: "Siren", 30: "SmartLock", 31: "SmartPlug", 32: "Switch",
+    33: "Television", 34: "Thermostat", 35: "Vent",
+    36: "Washer", 37: "WaterValve",
 }
 
 
@@ -70,7 +76,7 @@ LSTM_LR = 1e-3
 LSTM_WEIGHT_DECAY = 1e-5
 LSTM_EPOCHS = 10
 LSTM_BATCH_SIZE = 256
-LSTM_SEQ_LEN = 9       # first 9 steps as input → predict 10th step target
+LSTM_SEQ_LEN = CONTEXT_LENGTH  # first 9 steps as input → predict 10th step target
 LSTM_PATIENCE = 7       # early stopping patience
 
 

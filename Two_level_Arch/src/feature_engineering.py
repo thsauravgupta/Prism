@@ -92,17 +92,30 @@ def compute_power_proxy(instance: np.ndarray, num_devices: int) -> np.ndarray:
 def extract_heuristic_features(
     data: np.ndarray,
     num_devices: int,
+    exclude_last: bool = True,
 ) -> Dict[str, np.ndarray]:
-    
+    """Extract heuristic features from action sequences.
+
+    Args:
+        data: shape [N, seq_len, 5].
+        num_devices: total number of unique devices.
+        exclude_last: if True, compute features on first (seq_len-1) steps
+                      to avoid data leakage (target is the last step).
+
+    Returns:
+        Dictionary with recency, frequency, power arrays [N, num_devices].
+    """
     N = data.shape[0]
     recency = np.zeros((N, num_devices))
     frequency = np.zeros((N, num_devices))
     power = np.zeros((N, num_devices))
 
     for i in range(N):
-        recency[i] = compute_recency(data[i], num_devices)
-        frequency[i] = compute_frequency(data[i], num_devices)
-        power[i] = compute_power_proxy(data[i], num_devices)
+        # Use only context steps (exclude the target step to prevent leakage)
+        context = data[i, :-1] if exclude_last else data[i]
+        recency[i] = compute_recency(context, num_devices)
+        frequency[i] = compute_frequency(context, num_devices)
+        power[i] = compute_power_proxy(context, num_devices)
 
     return {
         "recency": recency,
@@ -115,9 +128,23 @@ def extract_xgboost_features(
     data: np.ndarray,
     num_devices: int,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    
+    """Extract XGBoost features with proper train/test separation.
+
+    Uses first 9 steps as context, step 10 as prediction target.
+    Heuristic features are computed on context only (no data leakage).
+
+    Args:
+        data: shape [N, 10, 5].
+        num_devices: total number of unique devices.
+
+    Returns:
+        X: feature matrix [N * num_devices, num_features]
+        y: labels [N * num_devices]  (1.0 for target device, 0.0 otherwise)
+        groups: group sizes [N]  (each group = num_devices candidates)
+    """
     N = data.shape[0]
-    heuristic_feats = extract_heuristic_features(data, num_devices)
+    # exclude_last=True → features computed on first 9 steps only
+    heuristic_feats = extract_heuristic_features(data, num_devices, exclude_last=True)
 
     features_list = []
     labels_list = []
@@ -125,14 +152,15 @@ def extract_xgboost_features(
 
     for i in range(N):
         instance = data[i]  # [10, 5]
+        context = instance[:-1]  # first 9 steps (context only)
 
         # Target is the last device in the sequence (for next-action prediction)
         target_device = int(instance[-1, 2])
 
-        # Contextual features: hour and day distributions
-        hours = instance[:, 1].astype(int)
-        days = instance[:, 0].astype(int)
-        avg_hour = np.mean(hours) / 23.0  # normalize
+        # Contextual features: hour and day distributions from CONTEXT only
+        hours = context[:, 1].astype(int)
+        days = context[:, 0].astype(int)
+        avg_hour = np.mean(hours) / 7.0  # 8 time bins (0-7)
 
         day_dist = np.zeros(7)
         for d in days:
@@ -181,11 +209,11 @@ def extract_lstm_sequences(
     y = data[:, -1, 2].astype(np.int64)     # device ID of 10th step
 
     if normalize:
-        # Normalize each feature column
-        # day_of_week: /6, hour: /23, device/control/device_control
+        # Normalize each feature column to [0, 1]
+        # day_of_week: 7 bins (0-6), hour: 8 bins (0-7)
         X[:, :, 0] = X[:, :, 0] / 6.0   # day to [0,1]
-        X[:, :, 1] = X[:, :, 1] / 23.0  # hour to [0,1]
-        # device, control, device_contro
+        X[:, :, 1] = X[:, :, 1] / 7.0   # hour to [0,1] (8 time bins)
+        # device, control, device_control — normalize by max observed
         max_device = max(X[:, :, 2].max(), 1)
         max_control = max(X[:, :, 3].max(), 1)
         max_dc = max(X[:, :, 4].max(), 1)
