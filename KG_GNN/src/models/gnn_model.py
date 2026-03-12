@@ -1,6 +1,7 @@
 import tensorflow as tf
 from keras.layers import Input, Embedding, Dense, Concatenate, LSTM, Dropout, Layer
 from keras.models import Model
+from keras.layers import Lambda
 import numpy as np
 
 class GCNEmbeddingLayer(Layer):
@@ -16,7 +17,10 @@ class GCNEmbeddingLayer(Layer):
         n_dev = adj_matrix.shape[0]
         padded_adj = np.zeros((num_devices, num_devices), dtype=np.float32)
         padded_adj[:n_dev, :n_dev] = adj_matrix
-        self.adj_matrix = tf.constant(padded_adj, dtype=tf.float32)
+        
+        # self.adj_matrix = tf.constant(padded_adj, dtype=tf.float32)
+        self.adj_matrix_np = padded_adj
+        self.adj_matrix = tf.constant(self.adj_matrix_np, dtype=tf.float32)
 
     def build(self, input_shape):
         self.device_embeddings = self.add_weight(shape=(self.num_devices, self.embed_dim),
@@ -37,6 +41,22 @@ class GCNEmbeddingLayer(Layer):
         
         # Look up the updated embeddings for the input device IDs
         return tf.gather(updated_embeddings, tf.cast(inputs, tf.int32))
+    
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "num_devices": self.num_devices,
+            "embed_dim": self.embed_dim,
+            "adj_matrix": self.adj_matrix.numpy().tolist()
+        })
+        return config
+    
+    @classmethod
+    def from_config(cls, config):
+        adj_matrix = np.array(config.pop("adj_matrix"), dtype=np.float32)
+        return cls(adj_matrix=adj_matrix, **config)
+    
+    
 
 def build_predictive_model(global_dicts, adj_matrix, seq_length=9, embed_dim=16):
     """
@@ -58,8 +78,9 @@ def build_predictive_model(global_dicts, adj_matrix, seq_length=9, embed_dim=16)
     emb_ctrl = Embedding(input_dim=vocab_ctrl, output_dim=16)(in_ctrl)
     
     # Simple continuous embedding for the unknown column
-    emb_unk = tf.expand_dims(tf.cast(in_unknown, tf.float32), -1)
-
+    # emb_unk = tf.expand_dims(tf.cast(in_unknown, tf.float32), -1)
+    emb_unk = Lambda(lambda x: tf.expand_dims(tf.cast(x, tf.float32), -1))(in_unknown)
+    
     # GNN-enhanced device embeddings
     gcn_dev = GCNEmbeddingLayer(vocab_dev, embed_dim, adj_matrix)(in_dev)
 

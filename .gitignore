@@ -1,1 +1,18 @@
-/venv
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual env
+venv/
+
+# Model artifacts
+models/
+*.h5
+*.tflite
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/

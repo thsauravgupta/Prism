@@ -52,8 +52,17 @@ class ModelTrainer:
         
         # Callbacks
         callbacks = [
-            tf.keras.callbacks.EarlyStopping(patience=3, restore_best_weights=True),
-            tf.keras.callbacks.ModelCheckpoint(os.path.join(self.model_dir, "best_gnn_model.h5"), save_best_only=True)
+            tf.keras.callbacks.EarlyStopping(
+                monitor="val_loss",
+                patience=3,
+                restore_best_weights=True
+            ),
+            tf.keras.callbacks.ModelCheckpoint(
+                filepath=os.path.join(self.model_dir, "best_gnn_model.keras"),
+                monitor="val_loss",
+                save_best_only=True,
+                verbose=1
+            )
         ]
         
         logger.info("Starting Training...")
@@ -71,8 +80,13 @@ class ModelTrainer:
             test_loss, test_acc = model.evaluate(test_features, y_test)
             logger.info(f"Test Accuracy: {test_acc:.4f}")
 
-        model_path = os.path.join(self.model_dir, "gnn_model.h5")
-        model.save(model_path)
+        
+        # save the model as a folder instead of file since it is safer to load and convert into tf lite
+        # model_path = os.path.join(self.model_dir, "gnn_model") 
+        # model.save(model_path)
+        
+        model_path = os.path.join(self.model_dir, "gnn_model")
+        model.export(model_path)
         logger.info(f"Model saved to {model_path}")
         
         return model_path
