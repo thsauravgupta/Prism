@@ -1,0 +1,1 @@
+{"N": 1000, "xgb_ms_total": 19.250106811523438, "xgb_ms_per_instance": 0.019250106811523438, "lstm_ms_total": 27.051782608032227, "lstm_ms_per_instance": 0.027051782608032225, "hybrid_ms_total": 48.556184768676765, "hybrid_ms_per_instance": 0.04855618476867676}
