@@ -28,22 +28,6 @@ def show_sample_ranking(model, X, prepare_features_fn, sample_idx=0, top_k=10):
         print(f"{rank:2d}. device_{device_id}  score={score:.4f}")
 
 
-# def topk_coverage(model, X_test, prepare_features_fn, top_k=5):
-#     features = prepare_features_fn(X_test)
-#     y_prob = model.predict(features, verbose=0)
-
-#     topk = np.argsort(-y_prob, axis=1)[:, :top_k]
-
-#     unique_predicted = np.unique(topk)
-#     total_devices = y_prob.shape[1]
-
-#     return {
-#         "unique_predicted_devices": int(len(unique_predicted)),
-#         "total_devices": int(total_devices),
-#         "coverage_ratio": float(len(unique_predicted) / total_devices),
-#     }
-
-
 def topk_coverage(y_prob, top_k=5):
     topk = np.argsort(-y_prob, axis=1)[:, :top_k]
 

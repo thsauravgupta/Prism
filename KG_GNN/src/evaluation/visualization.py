@@ -54,18 +54,6 @@ def plot_confusion_matrix_top_devices(y_true, y_pred, top_n=15):
     plt.tight_layout()
     plt.show()
 
-# def per_device_classification_report(y_true, y_pred, target_names=None):
-#     report = classification_report(
-#         y_true,
-#         y_pred,
-#         target_names=target_names,
-#         output_dict=True,
-#         zero_division=0,
-#     )
-
-
-#     return report
-
 
 def per_device_classification_report(y_true, y_pred, target_names=None):
     
