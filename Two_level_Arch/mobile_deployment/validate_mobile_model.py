@@ -1,13 +1,4 @@
-"""
-validate_mobile_model.py — Step 5: Validation
 
-Validates all converted models:
-  - Loads original and mobile models
-  - Runs identical inputs, compares outputs
-  - Checks for unsupported mobile operators
-  - Benchmarks inference speed
-  - Reports size comparison table
-"""
 import os, sys, time, json
 import numpy as np
 import torch
@@ -84,7 +75,7 @@ def validate_lstm():
             else:
                 m = torch.jit.load(fpath)
         except Exception as e:
-            print(f"  ❌ Failed to load: {e}")
+            print(f"   Failed to load: {e}")
             results[vname] = {"error": str(e)}
             continue
 
@@ -111,12 +102,12 @@ def validate_lstm():
                     "cosine_sim": cos_sim, "topk_match": topk_match,
                     "pass": max_diff < 0.1,
                 }
-                status = "✅" if max_diff < 0.1 else "⚠"
+                status = "" if max_diff < 0.1 else "⚠"
                 print(f"  {status} {tname}: max_diff={max_diff:.4e}, MAE={mae:.4e}, "
                       f"cos_sim={cos_sim:.6f}, top5_match={topk_match:.2%}")
             except Exception as e:
                 vr["tests"][tname] = {"error": str(e)}
-                print(f"  ❌ {tname}: {e}")
+                print(f"   {tname}: {e}")
 
         # Benchmark single instance
         x1 = inputs[0][1]
@@ -249,7 +240,7 @@ def print_summary(lstm_r, xgb_r, fuser_r):
           f"({((tot_orig-tot_opt)/tot_orig*100):.1f}% reduction)")
 
     all_pass = lstm_ok and xgb_ok
-    print(f"\n  Overall: {'✅ ALL VALIDATIONS PASSED' if all_pass else '⚠ SOME VALIDATIONS NEED REVIEW'}")
+    print(f"\n  Overall: {' ALL VALIDATIONS PASSED' if all_pass else '⚠ SOME VALIDATIONS NEED REVIEW'}")
 
 
 def main():
