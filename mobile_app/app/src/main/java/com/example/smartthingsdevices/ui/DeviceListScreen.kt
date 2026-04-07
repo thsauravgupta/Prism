@@ -14,6 +14,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.ExposedDropdownMenu
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -28,6 +33,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.smartthingsdevices.model.Device
+import com.example.smartthingsdevices.model.PredictiveModelOption
 import com.example.smartthingsdevices.viewmodel.DeviceViewModel
 
 @Composable
@@ -35,7 +41,7 @@ fun DeviceListScreen(
     viewModel: DeviceViewModel
 ) {
     var patToken by rememberSaveable { mutableStateOf("") }
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -57,11 +63,19 @@ fun DeviceListScreen(
             visualTransformation = PasswordVisualTransformation()
         )
 
+        ModelSelector(
+            availableModels = screenState.availableModels,
+            selectedModel = screenState.selectedModel,
+            onModelSelected = viewModel::selectModel,
+            modifier = Modifier.fillMaxWidth()
+        )
+
         Button(
             onClick = { viewModel.fetchDevices(patToken) },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = screenState.deviceUiState !is UiState.Loading
         ) {
-            Text("Fetch Devices")
+            Text("Fetch Devices with ${screenState.selectedModel.displayName}")
         }
 
         Box(
@@ -70,7 +84,7 @@ fun DeviceListScreen(
                 .weight(1f),
             contentAlignment = Alignment.Center
         ) {
-            when (val state = uiState) {
+            when (val state = screenState.deviceUiState) {
                 UiState.Loading -> {
                     CircularProgressIndicator()
                 }
@@ -93,6 +107,66 @@ fun DeviceListScreen(
                         DeviceList(devices = state.data)
                     }
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ModelSelector(
+    availableModels: List<PredictiveModelOption>,
+    selectedModel: PredictiveModelOption,
+    onModelSelected: (PredictiveModelOption) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = selectedModel.displayName,
+            onValueChange = {},
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth(),
+            readOnly = true,
+            singleLine = true,
+            label = { Text("Predictive model") },
+            supportingText = { Text(selectedModel.description) },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            }
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            availableModels.forEach { model ->
+                DropdownMenuItem(
+                    text = {
+                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                            Text(
+                                text = model.displayName,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                            Text(
+                                text = model.description,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    },
+                    onClick = {
+                        onModelSelected(model)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
             }
         }
     }
