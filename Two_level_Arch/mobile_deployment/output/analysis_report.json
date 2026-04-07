@@ -1,0 +1,190 @@
+{
+  "lstm": {
+    "architecture": {
+      "input_size": 5,
+      "hidden_size": 128,
+      "num_layers": 2,
+      "num_devices": 38,
+      "bidirectional": false,
+      "sequence_length": 9
+    },
+    "parameters": {
+      "total": 222630,
+      "trainable": 222630,
+      "model_memory_mb": 0.8493
+    },
+    "file_size_kb": 873.37,
+    "flops": {
+      "lstm": 3585024,
+      "fc": 42496,
+      "total": 3627520,
+      "total_mflops": 3.63
+    },
+    "mobile_compatible": true,
+    "compatibility_issues": [],
+    "benchmark_single": {
+      "mean_ms": 1.4209,
+      "median_ms": 1.4003,
+      "std_ms": 0.1726,
+      "min_ms": 1.1841,
+      "max_ms": 3.1729,
+      "p95_ms": 1.5972,
+      "p99_ms": 1.8424,
+      "runs": 200
+    },
+    "benchmark_batch100": {
+      "mean_ms": 2.7971,
+      "median_ms": 2.5494,
+      "std_ms": 0.8245,
+      "min_ms": 2.2036,
+      "max_ms": 6.5246,
+      "p95_ms": 4.1874,
+      "p99_ms": 6.3963,
+      "runs": 100
+    },
+    "layers": [
+      {
+        "name": "lstm.weight_ih_l0",
+        "shape": [
+          512,
+          5
+        ],
+        "params": 2560,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 10.0
+      },
+      {
+        "name": "lstm.weight_hh_l0",
+        "shape": [
+          512,
+          128
+        ],
+        "params": 65536,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 256.0
+      },
+      {
+        "name": "lstm.bias_ih_l0",
+        "shape": [
+          512
+        ],
+        "params": 512,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 2.0
+      },
+      {
+        "name": "lstm.bias_hh_l0",
+        "shape": [
+          512
+        ],
+        "params": 512,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 2.0
+      },
+      {
+        "name": "lstm.weight_ih_l1",
+        "shape": [
+          512,
+          128
+        ],
+        "params": 65536,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 256.0
+      },
+      {
+        "name": "lstm.weight_hh_l1",
+        "shape": [
+          512,
+          128
+        ],
+        "params": 65536,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 256.0
+      },
+      {
+        "name": "lstm.bias_ih_l1",
+        "shape": [
+          512
+        ],
+        "params": 512,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 2.0
+      },
+      {
+        "name": "lstm.bias_hh_l1",
+        "shape": [
+          512
+        ],
+        "params": 512,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 2.0
+      },
+      {
+        "name": "fc.0.weight",
+        "shape": [
+          128,
+          128
+        ],
+        "params": 16384,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 64.0
+      },
+      {
+        "name": "fc.0.bias",
+        "shape": [
+          128
+        ],
+        "params": 128,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 0.5
+      },
+      {
+        "name": "fc.3.weight",
+        "shape": [
+          38,
+          128
+        ],
+        "params": 4864,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 19.0
+      },
+      {
+        "name": "fc.3.bias",
+        "shape": [
+          38
+        ],
+        "params": 38,
+        "dtype": "torch.float32",
+        "requires_grad": true,
+        "size_kb": 0.1484375
+      }
+    ]
+  },
+  "xgboost": {
+    "model_type": "XGBRanker",
+    "file_format": "JSON",
+    "file_size_kb": 1229.42,
+    "n_features_in": 11,
+    "n_estimators": 200,
+    "max_depth": 6,
+    "actual_n_trees": 200,
+    "objective": "rank:pairwise",
+    "benchmark": {
+      "batch_size": "1000\u00d738",
+      "mean_ms": 15.006,
+      "median_ms": 14.653,
+      "min_ms": 11.413
+    }
+  }
+}

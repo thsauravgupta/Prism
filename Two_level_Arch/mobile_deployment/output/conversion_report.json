@@ -1,0 +1,26 @@
+{
+  "lstm": {
+    "original_size_kb": 873.373046875,
+    "torchscript_size_kb": 885.908203125,
+    "optimized_size_kb": 876.3203125,
+    "optimized_ptl_size_kb": 878.7353515625,
+    "quantized_ts_size_kb": 254.41015625,
+    "quantized_ptl_size_kb": 451.4736328125,
+    "fp16_size_kb": 451.3486328125,
+    "fp16_ptl_size_kb": 443.7548828125,
+    "accuracy_diff": {
+      "quantized_int8_max_diff": 0.058526039123535156,
+      "quantized_int8_mae": 0.024242116138339043
+    }
+  },
+  "xgboost": {
+    "original_size_kb": 1229.416015625,
+    "ubj_size_kb": 788.2392578125,
+    "ubj_max_diff": 0.0,
+    "size_reduction_pct": 35.89
+  },
+  "fuser": {
+    "fuser_ts_size_kb": 3.5322265625,
+    "fuser_ptl_size_kb": 5.2900390625
+  }
+}
