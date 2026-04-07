@@ -7,9 +7,7 @@ __pycache__/
 venv/
 
 # Model artifacts
-models/
 *.h5
-*.tflite
 
 # Logs
 *.log
