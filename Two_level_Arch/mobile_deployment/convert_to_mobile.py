@@ -1,11 +1,4 @@
-"""
-convert_to_mobile.py — Steps 2, 3, 4: Convert, Optimize & Reduce Size
 
-Pipeline:
-  LSTM:     .pt -> eval -> TorchScript -> optimize_for_mobile -> INT8 quantization -> .ptl
-  XGBoost:  .json -> compressed UBJ binary
-  Fuser:    reimplemented as TorchScript module -> bundled .ptl
-"""
 import os, sys, json, shutil
 import numpy as np
 import torch

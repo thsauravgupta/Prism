@@ -1,0 +1,15 @@
+﻿Starting a Gradle Daemon, 1 incompatible and 8 stopped Daemons could not be reused, use --status for details
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:generateDebugRFile UP-TO-DATE
+
+> Task :app:compileDebugKotlin
+w: file:///C:/Users/Predator/OneDrive/Desktop/DND/Prism/VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem/mobile_app/app/src/main/java/com/example/smartthingsdevices/ui/DeviceListScreen.kt:194:18 'fun Modifier.menuAnchor(): Modifier' is deprecated. Use overload that takes ExposedDropdownMenuAnchorType and enabled parameters.
+
+BUILD SUCCESSFUL in 19s
+6 actionable tasks: 1 executed, 5 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.1/userguide/configuration_cache_enabling.html
