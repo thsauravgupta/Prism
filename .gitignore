@@ -29,3 +29,6 @@ local.properties
 
 # Misc
 *.log
+
+# Large Binaries
+*.apk

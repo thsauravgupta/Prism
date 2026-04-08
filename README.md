@@ -301,7 +301,7 @@ The Android app (`mobile_app/`) integrates both models for on-device inference:
 **Requirements**: Android Studio, API 24+, Kotlin
 
 ### Pre-built APK (Fastest for review)
-For immediate evaluation without compiling, you can install the pre-built APK provided in the repository root:
+For immediate evaluation without compiling, please download the pre-built `SmartThings_OnDevice_Predictive_Demo.apk` from the **GitHub Releases** section of this repository. Then run:
 ```bash
 # Install the pre-built APK to your connected device/emulator
 adb install SmartThings_OnDevice_Predictive_Demo.apk
