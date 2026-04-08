@@ -1,10 +1,12 @@
 package com.example.smartthingsdevices.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.smartthingsdevices.data.DeviceRepository
 
 class DeviceViewModelFactory(
+    private val application: Application,
     private val repository: DeviceRepository
 ) : ViewModelProvider.Factory {
 
@@ -13,6 +15,6 @@ class DeviceViewModelFactory(
         require(modelClass.isAssignableFrom(DeviceViewModel::class.java)) {
             "Unknown ViewModel class: ${modelClass.name}"
         }
-        return DeviceViewModel(repository) as T
+        return DeviceViewModel(application, repository) as T
     }
 }

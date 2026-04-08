@@ -17,6 +17,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: DeviceViewModel by viewModels {
         DeviceViewModelFactory(
+            application = application,
             repository = DeviceRepository(RetrofitClient.apiService)
         )
     }

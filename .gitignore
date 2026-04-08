@@ -14,3 +14,18 @@ venv/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Gradle build files
+build/
+*/build/
+
+# Android specific
+.gradle/
+local.properties
+
+# IDE files
+.idea/
+*.iml
+
+# Misc
+*.log
