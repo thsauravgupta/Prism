@@ -1,0 +1,24 @@
+# ──────────────────────────────────────────────────────────────────────────────
+#  docker-compose.yml — SmartThings On-Device Predictive Model
+#
+#  Services:
+#    inference:  Runs demo inference using trained models
+#
+#  Usage:
+#    docker compose up --build        # build & run demo
+#    docker compose run inference python demo_inference.py --two-level
+#    docker compose run inference python demo_inference.py --kg-gnn
+#    docker compose run inference python demo_inference.py --all
+# ──────────────────────────────────────────────────────────────────────────────
+
+services:
+  inference:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: smartthings-inference
+    volumes:
+      - ./output:/app/output
+    environment:
+      - PYTHONPATH=/app
+    command: ["python", "demo_inference.py", "--all"]

@@ -1,0 +1,121 @@
+﻿python : C:\Users\Predator\OneDrive\Desktop\D
+ND\Prism\VIT_25ST07VIT_On-Device_Predictive_M
+odel_Integration_for_SmartThings_Ecosystem\Tw
+o_level_Arch\models\lstm_model.py:135: 
+FutureWarning: You are using `torch.load` 
+with `weights_only=False` (the current 
+default value), which uses the default 
+pickle module implicitly. It is possible to 
+construct malicious pickle data which will 
+execute arbitrary code during unpickling 
+(See https://github.com/pytorch/pytorch/blob/
+main/SECURITY.md#untrusted-models for more 
+details). In a future release, the default 
+value for `weights_only` will be flipped to 
+`True`. This limits the functions that could 
+be executed during unpickling. Arbitrary 
+objects will no longer be allowed to be 
+loaded via this mode unless they are 
+explicitly allowlisted by the user via 
+`torch.serialization.add_safe_globals`. We 
+recommend you start setting 
+`weights_only=True` for any use case where 
+you don't have full control of the loaded 
+file. Please open an issue on GitHub for any 
+issues related to this experimental feature.
+At line:1 char:1
++ python demo_inference.py --two-level 2>&1 
+| Out-File -FilePath "demo_ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified:  
+   (C:\Users\Predat...mental feature.:Strin  
+  g) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandE 
+   rror
+ 
+  checkpoint = torch.load(path, 
+map_location=device or "cpu")
+╔══════════════════════════════════════════════════════════════════════╗
+║  SmartThings On-Device Predictive Model — Inference Demo            ║
+║  VIT_25ST07VIT Team                                                 ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+======================================================================
+  Pipeline 1: Two-Level Architecture Inference
+======================================================================
+
+  [1/5] Loading pre-trained models...
+         ✓ HeuristicScorer loaded (weights: {'w1_recency': 0.4, 'w2_frequency': 0.4, 'w3_power': 0.2})
+[INFO] XGBoost model loaded from C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\Two_level_Arch\saved_models\xgboost_reranker.json
+         ✓ XGBoost ContextualReRanker loaded (11 features)
+[INFO] LSTM model loaded from C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\Two_level_Arch\saved_models\lstm_routine_predictor.pt
+         ✓ LSTM RoutinePredictor loaded (hidden=128, layers=2)
+         ✓ HybridDecisionEngine loaded (weights: {'heuristic': 0.3, 'xgboost': 0.35, 'lstm': 0.35})
+
+  [2/5] Preparing sample input...
+         Input: 9 action steps, 5 features each
+         Ground truth target: Television (id=33)
+
+  [3/5] Computing heuristic scores...
+         Heuristic scores shape: (38,)
+
+  Heuristic Top-5
+  Rank   Device                         Score
+  ------ ------------------------- ----------
+  #1     Light                         0.6000
+  #2     SmartLock                     0.5444
+  #3     Washer                        0.5000
+  #4     Refrigerator                  0.4111
+  #5     AirConditioner                0.3667
+
+  [4/5] Running XGBoost re-ranking...
+         XGBoost scores shape: (38,)
+
+  XGBoost Top-5
+  Rank   Device                         Score
+  ------ ------------------------- ----------
+  #1     Light                         1.4451
+  #2     SmartLock                     1.4420
+  #3     MotionSensor                  1.0100
+  #4     Washer                        0.9448
+  #5     Television                    0.9018
+
+  [5/5] Running LSTM routine prediction...
+         LSTM probabilities shape: (38,)
+
+  LSTM Top-5
+  Rank   Device                         Score
+  ------ ------------------------- ----------
+  #1     Television                    0.3763
+  #2     RobotCleaner                  0.2564
+  #3     Elevator                      0.1397
+  #4     Dryer                         0.0478
+  #5     AirPurifier                   0.0450
+
+======================================================================
+  Hybrid Fusion — Final Results
+======================================================================
+
+  Fusion weights: heuristic=0.3, xgboost=0.35, lstm=0.35
+
+  ★ Fused Top-5 Predictions
+  Rank   Device                         Score
+  ------ ------------------------- ----------
+  #1     Television                    0.7951
+  #2     Light                         0.6509
+  #3     SmartLock                     0.6253
+  #4     Washer                        0.5839
+  #5     Refrigerator                  0.5174
+
+  Ground truth: Television (id=33)
+  Hit@5: ✅ YES — target is in top-5
+
+  Results saved to output/two_level_results.json
+
+======================================================================
+  DEMO COMPLETE
+======================================================================
+
+  All results saved to: C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\output\demo_results.json
+  Output directory: C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\output/
+

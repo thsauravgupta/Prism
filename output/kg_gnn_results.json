@@ -1,0 +1,42 @@
+{
+  "pipeline": "KG-GNN (Keras)",
+  "ground_truth": {
+    "device_id": 33,
+    "device_name": "Television"
+  },
+  "predictions": [
+    {
+      "rank": 1,
+      "device_id": 0,
+      "device_name": "AirConditioner",
+      "score": 0.27455785870552063
+    },
+    {
+      "rank": 2,
+      "device_id": 2,
+      "device_name": "Blind",
+      "score": 0.1566215455532074
+    },
+    {
+      "rank": 3,
+      "device_id": 1,
+      "device_name": "AirPurifier",
+      "score": 0.08689244836568832
+    },
+    {
+      "rank": 4,
+      "device_id": 29,
+      "device_name": "Siren",
+      "score": 0.08130855113267899
+    },
+    {
+      "rank": 5,
+      "device_id": 24,
+      "device_name": "Projector",
+      "score": 0.07667213678359985
+    }
+  ],
+  "hit_at_5": false,
+  "inference_ms": 566.5174,
+  "runtime": "Keras"
+}

@@ -1,0 +1,208 @@
+﻿python : C:\Users\Predator\OneDrive\Deskt
+op\DND\Prism\VIT_25ST07VIT_On-Device_Pred
+ictive_Model_Integration_for_SmartThings_
+Ecosystem\Two_level_Arch\models\lstm_mode
+l.py:135: FutureWarning: You are using 
+`torch.load` with `weights_only=False` 
+(the current default value), which uses 
+the default pickle module implicitly. It 
+is possible to construct malicious 
+pickle data which will execute arbitrary 
+code during unpickling (See https://githu
+b.com/pytorch/pytorch/blob/main/SECURITY.
+md#untrusted-models for more details). 
+In a future release, the default value 
+for `weights_only` will be flipped to 
+`True`. This limits the functions that 
+could be executed during unpickling. 
+Arbitrary objects will no longer be 
+allowed to be loaded via this mode 
+unless they are explicitly allowlisted 
+by the user via 
+`torch.serialization.add_safe_globals`. 
+We recommend you start setting 
+`weights_only=True` for any use case 
+where you don't have full control of the 
+loaded file. Please open an issue on 
+GitHub for any issues related to this 
+experimental feature.
+At line:1 char:1
++ python demo_inference.py --all 2>&1 | 
+Out-File -FilePath "demo_full_o ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : 
+NotSpecified:     
+(C:\Users\Predat...mental feature.:Strin 
+   g) [], RemoteException
+    + FullyQualifiedErrorId : 
+NativeCommandE    rror
+ 
+  checkpoint = torch.load(path, 
+map_location=device or "cpu")
+2026-04-09 00:20:32.447374: I 
+tensorflow/core/util/port.cc:153] oneDNN 
+custom operations are on. You may see 
+slightly different numerical results due 
+to floating-point round-off errors from 
+different computation orders. To turn 
+them off, set the environment variable 
+`TF_ENABLE_ONEDNN_OPTS=0`.
+2026-04-09 00:20:36.040803: I 
+tensorflow/core/util/port.cc:153] oneDNN 
+custom operations are on. You may see 
+slightly different numerical results due 
+to floating-point round-off errors from 
+different computation orders. To turn 
+them off, set the environment variable 
+`TF_ENABLE_ONEDNN_OPTS=0`.
+C:\Users\Predator\AppData\Local\Programs\
+Python\Python311\Lib\site-packages\tensor
+flow\lite\python\interpreter.py:457: 
+UserWarning:     Warning: 
+tf.lite.Interpreter is deprecated and is 
+scheduled for deletion in
+    TF 2.20. Please use the LiteRT 
+interpreter from the ai_edge_litert 
+package.
+    See the [migration guide](https://ai.
+google.dev/edge/litert/migration)
+    for details.
+    
+  warnings.warn(_INTERPRETER_DELETION_WAR
+NING)
+INFO: Created TensorFlow Lite XNNPACK 
+delegate for CPU.
+2026-04-09 00:20:37.562506: I tensorflow/
+core/platform/cpu_feature_guard.cc:210] 
+This TensorFlow binary is optimized to 
+use available CPU instructions in 
+performance-critical operations.
+To enable the following instructions: 
+SSE3 SSE4.1 SSE4.2 AVX AVX2 AVX_VNNI 
+FMA, in other operations, rebuild 
+TensorFlow with the appropriate compiler 
+flags.
+WARNING:tensorflow:From C:\Users\Predator
+\AppData\Local\Programs\Python\Python311\
+Lib\site-packages\keras\src\backend\tenso
+rflow\core.py:232: The name 
+tf.placeholder is deprecated. Please use 
+tf.compat.v1.placeholder instead.
+
+╔══════════════════════════════════════════════════════════════════════╗
+║  SmartThings On-Device Predictive Model — Inference Demo            ║
+║  VIT_25ST07VIT Team                                                 ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+======================================================================
+  Pipeline 1: Two-Level Architecture Inference
+======================================================================
+
+  [1/5] Loading pre-trained models...
+         ✓ HeuristicScorer loaded (weights: {'w1_recency': 0.4, 'w2_frequency': 0.4, 'w3_power': 0.2})
+[INFO] XGBoost model loaded from C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\Two_level_Arch\saved_models\xgboost_reranker.json
+         ✓ XGBoost ContextualReRanker loaded (11 features)
+[INFO] LSTM model loaded from C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\Two_level_Arch\saved_models\lstm_routine_predictor.pt
+         ✓ LSTM RoutinePredictor loaded (hidden=128, layers=2)
+         ✓ HybridDecisionEngine loaded (weights: {'heuristic': 0.3, 'xgboost': 0.35, 'lstm': 0.35})
+
+  [2/5] Preparing sample input...
+         Input: 9 action steps, 5 features each
+         Ground truth target: Television (id=33)
+
+  [3/5] Computing heuristic scores...
+         Heuristic scores shape: (38,)
+
+  Heuristic Top-5
+  Rank   Device                         Score
+  ------ ------------------------- ----------
+  #1     Light                         0.6000
+  #2     SmartLock                     0.5444
+  #3     Washer                        0.5000
+  #4     Refrigerator                  0.4111
+  #5     AirConditioner                0.3667
+
+  [4/5] Running XGBoost re-ranking...
+         XGBoost scores shape: (38,)
+
+  XGBoost Top-5
+  Rank   Device                         Score
+  ------ ------------------------- ----------
+  #1     Light                         1.4451
+  #2     SmartLock                     1.4420
+  #3     MotionSensor                  1.0100
+  #4     Washer                        0.9448
+  #5     Television                    0.9018
+
+  [5/5] Running LSTM routine prediction...
+         LSTM probabilities shape: (38,)
+
+  LSTM Top-5
+  Rank   Device                         Score
+  ------ ------------------------- ----------
+  #1     Television                    0.3763
+  #2     RobotCleaner                  0.2564
+  #3     Elevator                      0.1397
+  #4     Dryer                         0.0478
+  #5     AirPurifier                   0.0450
+
+======================================================================
+  Hybrid Fusion — Final Results
+======================================================================
+
+  Fusion weights: heuristic=0.3, xgboost=0.35, lstm=0.35
+
+  ★ Fused Top-5 Predictions
+  Rank   Device                         Score
+  ------ ------------------------- ----------
+  #1     Television                    0.7951
+  #2     Light                         0.6509
+  #3     SmartLock                     0.6253
+  #4     Washer                        0.5839
+  #5     Refrigerator                  0.5174
+
+  Ground truth: Television (id=33)
+  Hit@5: ✅ YES — target is in top-5
+
+  Results saved to output/two_level_results.json
+
+======================================================================
+  Pipeline 2: KG-GNN Inference
+======================================================================
+
+  [1/3] Attempting TFLite model...
+         ⚠ TFLite requires Flex ops (install tensorflow-select-tf-ops)
+         Falling back to Keras model...
+
+  [1/3] Loading Keras model: final_gnn_model.keras...
+         ✓ Keras model loaded (11,770 parameters)
+
+  [2/3] Preparing sample input...
+         Ground truth: Television (id=33)
+         Model inputs: ['dayofweek', 'hour', 'device', 'unknown', 'device_control']
+
+  [3/3] Running Keras inference...
+         Inference time: 566.52 ms (Keras)
+         Output probabilities shape: (46,)
+
+  ★ KG-GNN Top-5 Predictions (Keras)
+  Rank   Device                         Score
+  ------ ------------------------- ----------
+  #1     AirConditioner                0.2746
+  #2     Blind                         0.1566
+  #3     AirPurifier                   0.0869
+  #4     Siren                         0.0813
+  #5     Projector                     0.0767
+
+  Ground truth: Television (id=33)
+  Hit@5: ❌ NO
+
+  Results saved to output/kg_gnn_results.json
+
+======================================================================
+  DEMO COMPLETE
+======================================================================
+
+  All results saved to: C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\output\demo_results.json
+  Output directory: C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\output/
+

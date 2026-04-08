@@ -1,0 +1,40 @@
+{
+  "pipeline": "Two-Level Architecture",
+  "ground_truth": {
+    "device_id": 33,
+    "device_name": "Television"
+  },
+  "predictions": [
+    {
+      "rank": 1,
+      "device_id": 33,
+      "device_name": "Television",
+      "fused_score": 0.7950879864820808
+    },
+    {
+      "rank": 2,
+      "device_id": 16,
+      "device_name": "Light",
+      "fused_score": 0.6509245480663997
+    },
+    {
+      "rank": 3,
+      "device_id": 30,
+      "device_name": "SmartLock",
+      "fused_score": 0.625346089698004
+    },
+    {
+      "rank": 4,
+      "device_id": 36,
+      "device_name": "Washer",
+      "fused_score": 0.5839376144713898
+    },
+    {
+      "rank": 5,
+      "device_id": 25,
+      "device_name": "Refrigerator",
+      "fused_score": 0.5173558995142492
+    }
+  ],
+  "hit_at_5": true
+}
