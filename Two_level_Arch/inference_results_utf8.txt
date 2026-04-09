@@ -1,0 +1,13 @@
+﻿Loading models...
+[INFO] XGBoost model loaded from C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\Two_level_Arch\saved_models\xgboost_reranker.json
+[INFO] LSTM model loaded from C:\Users\Predator\OneDrive\Desktop\DND\Prism\VIT_25ST07VIT_On-Device_Predictive_Model_Integration_for_SmartThings_Ecosystem\Two_level_Arch\saved_models\lstm_routine_predictor.pt
+Generating dummy data...
+
+Evaluating inference time for batch size N=1000 (total 38000 device evaluations for XGBoost)
+XGBoost Inference Time: 19.40 ms per batch of 1000
+XGBoost Inference Time: 0.0194 ms per instance
+LSTM Inference Time: 19.72 ms per batch of 1000
+LSTM Inference Time: 0.0197 ms per instance
+Fusion only time: 1.93 ms per batch of 1000
+Total end-to-end Hybrid Inference Time (LSTM + XGB + Fuser): 41.05 ms per batch of 1000
+Total end-to-end Hybrid Inference Time: 0.0410 ms per instance
