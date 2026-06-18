@@ -1,14 +1,4 @@
-"""
-analyze_model.py — Step 1: Comprehensive Model Analysis
 
-Analyzes the LSTM RoutinePredictor and XGBoost ContextualReRanker models:
-  - Architecture details and parameter counts
-  - Input/output shapes and dependencies
-  - Compute complexity (FLOPs estimation)
-  - Model file sizes
-  - Mobile operator compatibility check
-  - Inference latency benchmarks
-"""
 
 import os
 import sys
@@ -18,7 +8,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-# ── Path setup ──────────────────────────────────────────────────────────
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))
 sys.path.insert(0, PROJECT_ROOT)
@@ -30,7 +20,6 @@ from Two_level_Arch.src.config import (
     LSTM_NUM_LAYERS, LSTM_BIDIRECTIONAL, MODEL_SAVE_DIR,
 )
 
-# ── Output directory ────────────────────────────────────────────────────
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, "output")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -264,7 +253,7 @@ def analyze_lstm():
         for issue in issues:
             print(f"    {issue}")
     else:
-        print("    ✅ All operations are mobile-compatible")
+        print("     All operations are mobile-compatible")
 
     # Check specific op support
     print(f"\n  ── Module Hierarchy ──")
@@ -320,9 +309,6 @@ def analyze_lstm():
 
 
 def main():
-    print("╔══════════════════════════════════════════════════════════════════════╗")
-    print("║       SmartThings Model Analysis — Mobile Deployment Prep          ║")
-    print("╚══════════════════════════════════════════════════════════════════════╝")
 
     results = {}
 
@@ -353,7 +339,7 @@ def main():
     serializable = json.loads(json.dumps(results, default=str))
     with open(output_path, "w") as f:
         json.dump(serializable, f, indent=2)
-    print(f"\n  📄 Full report saved to: {output_path}")
+    print(f"\n  Full report saved to: {output_path}")
     print("=" * 70)
 
 
